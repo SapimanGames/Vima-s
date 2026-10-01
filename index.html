@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vima's — It's a Break With Coffee</title>
+<title>Vima — It's a Break With Coffee</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- ===== HEADER ===== -->
-  <header class="site-header" id="top">
+  <div id="top" class="scroll-anchor" aria-hidden="true"></div>
+  <header class="site-header">
     <div class="header-inner">
-      <div class="logo">Vima's</div>
+      <div class="logo">Vima</div>
       <nav class="main-nav" id="mainNav">
         <a href="#top" class="nav-link active">Home</a>
         <a href="#menu" class="nav-link">Menu</a>
@@ -43,7 +44,7 @@
       </h1>
       <div class="hero-visual">
         <div class="cup-glow"></div>
-        <img class="hero-cup" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80" alt="Es kopi Milton's dengan whipped cream">
+        <img class="hero-cup" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80" alt="Es kopi dengan whipped cream">
       </div>
     </div>
     <div class="hero-dots">
@@ -66,22 +67,18 @@
     <!-- ===== FEATURED PRODUCT ===== -->
     <div class="featured-product" id="featuredProduct">
       <div class="fp-visual">
-        <div class="milk-scale">
-          <button class="milk-dot" data-milk="White" style="--dot:#f4ede2"><span>White</span></button>
-          <button class="milk-dot" data-milk="Milk" style="--dot:#c99a6b"><span>Milk</span></button>
-          <button class="milk-dot" data-milk="Dark" style="--dot:#4a2c17"><span>Dark</span></button>
-        </div>
+        <div class="variant-scale" id="variantScale"></div>
         <img id="fpImage" src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=500&q=80" alt="Milton's Choco Coffee">
       </div>
       <div class="fp-info">
-        <h2 id="fpName">Vima's Choco Coffee</h2>
+        <h2 id="fpName">Vima's Glacier Latte</h2>
         <div class="fp-rating" aria-label="Rating 4 dari 5">★★★★<span class="dim">★</span></div>
-        <div class="fp-price" id="fpPrice">$1.20</div>
+        <div class="fp-price" id="fpPrice">Rp.20.000</div>
         <p id="fpDesc">Chocolate coffee, dikenal juga sebagai mocha, adalah minuman lezat yang menggabungkan rasa cokelat yang kaya dengan sensasi kopi yang menyegarkan. Perpaduan klasik ini bisa dinikmati panas atau dingin, dan dapat disesuaikan dengan selera Anda.</p>
         <div class="fp-actions">
           <div class="qty-control">
             <button id="qtyMinus" aria-label="Kurangi jumlah">–</button>
-            <span id="qtyValue">2</span>
+            <span id="qtyValue">1</span>
             <button id="qtyPlus" aria-label="Tambah jumlah">+</button>
           </div>
           <button class="btn-add" id="addToCartBtn">Add to Cart</button>
@@ -150,7 +147,7 @@
   <footer class="site-footer">
     <div class="footer-grid">
       <div class="footer-brand">
-        <h3>Vima's</h3>
+        <h3>Vima</h3>
         <p>Kopi pilihan yang dipanggang dengan tangan, diseduh dengan perhatian — teman terbaik untuk setiap jeda hari Anda.</p>
       </div>
       <div class="footer-col">
@@ -176,8 +173,74 @@
       </div>
     </div>
     <hr>
-    <p class="footer-copy">All copyrights are reserved by TI kelompok 3</p>
+    <p class="footer-copy">All copyrights are reserved by Milton's</p>
   </footer>
+
+  <!-- ===== OVERLAY (untuk cart drawer & modal checkout) ===== -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ===== CART DRAWER ===== -->
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Keranjang belanja">
+    <div class="cart-drawer-head">
+      <h3>Keranjang Belanja</h3>
+      <button class="drawer-close" id="cartCloseBtn" aria-label="Tutup keranjang">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty">Keranjang masih kosong. Yuk pilih menu favoritmu!</p>
+    </div>
+    <div class="cart-drawer-foot">
+      <div class="cart-subtotal-row">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">Rp.0.00</span>
+      </div>
+      <button class="btn-checkout" id="checkoutBtn" disabled>Checkout</button>
+    </div>
+  </aside>
+
+  <!-- ===== CHECKOUT MODAL ===== -->
+  <div class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true" aria-label="Checkout pesanan">
+    <div class="checkout-panel">
+      <button class="drawer-close" id="checkoutCloseBtn" aria-label="Tutup checkout">✕</button>
+
+      <div class="checkout-form-view">
+        <h3>Checkout Pesanan</h3>
+        <div class="checkout-body">
+          <div class="checkout-summary">
+            <h4>Ringkasan Pesanan</h4>
+            <div class="checkout-items" id="checkoutItems"></div>
+            <div class="checkout-total-row">
+              <span>Total</span>
+              <span id="checkoutTotal">Rp.0</span>
+            </div>
+          </div>
+          <form class="checkout-form" id="checkoutForm">
+            <h4>Data Pengiriman</h4>
+            <label>
+              Nama Penerima
+              <input type="text" name="name" required placeholder="Nama lengkap">
+            </label>
+              Metode Pembayaran
+              <select name="payment" required>
+                <option value="cod">Bayar ke Kasir</option>
+                <option value="card">Kartu Debit/Kredit</option>
+                <option value="ewallet">E-Wallet</option>
+              </select>
+            </label>
+            <button type="submit" class="btn-add btn-place-order">Buat Pesanan</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="checkout-success-view">
+        <div class="success-icon">✓</div>
+        <h3>Pesanan Berhasil Dibuat!</h3>
+        <p>Nomor pesanan kamu <strong id="successOrderId">#00000</strong></p>
+        <p class="success-total">Total dibayar: <strong id="successTotal">Rp.0.00</strong></p>
+        <p class="success-note">Kami akan segera memproses pesananmu. Terima kasih sudah memilih Vima</p>
+        <button class="btn-add" id="successCloseBtn">Selesai</button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
